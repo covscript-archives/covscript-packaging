@@ -8,7 +8,7 @@ fi
 
 mkdir .$$.install
 
-(cd .$$.install && ln -s /Application .)
+(cd .$$.install && ln -s /Applications .)
 cp -r "$1" .$$.install/
 
 hdiutil create -volname CovScript -srcfolder $PWD/.$$.install -ov -format UDZO covscript.dmg
