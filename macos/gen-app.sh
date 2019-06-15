@@ -163,10 +163,9 @@ export PATH="\${PATH}:\${covscriptDir}/bin"
 export LD_LIBRARY_PATH="\${LD_LIBRARY_PATH}:\${covscriptDir}/lib"
 
 csReplBin="\${covscriptDir}/bin/cs_repl"
+csImportPath="\$HOME/Library/Application Support/org.covscript.env/\${csABIVersion}/imports"
 
 if [[ "\$HOME"x != ""x ]];then
-    csImportPath="\$HOME/Library/Application Support/org.covscript.env/\${csABIVersion}/imports"
-
     if [[ ! -d "\${csImportPath}" ]]; then
         mkdir -p -m 755 "\${csImportPath}"
     fi
