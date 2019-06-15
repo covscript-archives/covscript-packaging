@@ -6,6 +6,7 @@ This repo contains useful tools for creating CovScript app bundle for Windows, L
 
 ## Overview
 + macos/
-  - template/: Template for building CovScript.app from command line instead of Xcode.
   - gen-icns.sh: Convert png files to icns files.
+  - gen-app.sh : Build CovScript.app from command line.
+  - gen-dmg.sh : Build .dmg install file.
 
