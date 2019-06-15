@@ -6,12 +6,13 @@ This repo contains useful tools for creating CovScript app bundle for Windows, L
 
 ## Overview
 + macos/
-  - gen-app.sh : Build CovScript.app from command line.
-  - gen-dmg.sh : Build .dmg install file.
-  - gen-icns.sh: Convert png files to icns files.
+  - gen-app.sh      : Build CovScript.app(System terminal).
+  - gen-app-iterm.sh: Build CovScript.app(iTerm terminal).
+  - gen-dmg.sh      : Build .dmg install file.
+  - gen-icns.sh     : Convert png files to icns files.
 
 ## macOS tools
-+ gen-app.sh
++ gen-app.sh/gen-app-iterm.sh
 ```
 Usage: gen-app.sh <build-artifact-dir> <logo-png>
 ```

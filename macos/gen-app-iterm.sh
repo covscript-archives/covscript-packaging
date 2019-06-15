@@ -132,11 +132,82 @@ cat > "$contentDir/MacOS/wrapper" << EOF
 set selfPath to POSIX path of ((path to me as text) & "::")
 set command to ("clear; exec " & selfPath & "/launcher " & selfPath)
 
+on theSplit(theString, theDelimiter)
+	set oldDelimiters to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to theDelimiter
+	set theArray to every text item of theString
+	set AppleScript's text item delimiters to oldDelimiters
+	return theArray
+end theSplit
 
-tell application "Terminal"
-	activate
-	set currentTab to do script with command command
-end tell
+on IsModernVersion(version)
+    set myArray to my theSplit(version, ".")
+    set major to item 1 of myArray
+    set minor to item 2 of myArray
+    set veryMinor to item 3 of myArray
+
+    if major < 2 then
+        return false
+    end if
+    if major > 2 then
+        return true
+    end if
+    if minor < 9 then
+        return false
+    end if
+    if minor > 9 then
+        return true
+    end if
+    if veryMinor < 20140903 then
+        return false
+    end if
+    return true
+end IsModernVersion
+
+on NewScript()
+    return "
+	set newWindow to (create window with default profile command \"sh\")
+	tell current session of newWindow
+		write text command
+	end tell"
+end NewScript
+
+on OldScript()
+    return "
+    set myTerm to (make new terminal)
+    tell myTerm
+        launch session \"Default\"
+		tell (last session)
+			write text command
+		end tell
+    end tell"
+end OldScript
+
+try
+	tell application "Finder" to get application file id "com.googlecode.iterm2"
+
+	tell application "iTerm"
+	    if my IsModernVersion(version) then
+	        set myScript to my NewScript()
+	    else
+	        set myScript to my OldScript()
+	    end if
+	end tell
+
+	set fullScript to "
+	set command to \"" & command & "\"
+	tell application \"iTerm\"
+	" & myScript & "
+	end tell"
+
+	run script fullScript
+
+on error
+	tell application "Terminal"
+		activate
+		set currentTab to do script with command command
+	end tell
+end try
 
 EOF
 
