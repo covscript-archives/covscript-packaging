@@ -168,18 +168,17 @@ export PATH="\${PATH}:\${covscriptDir}/bin"
 export LD_LIBRARY_PATH="\${LD_LIBRARY_PATH}:\${covscriptDir}/lib"
 
 csReplBin="\${covscriptDir}/bin/cs_repl"
-csImportPath="\$HOME/Library/Application Support/org.covscript.env/\${csABIVersion}/imports"
+csUserImportPath="\$HOME/Library/Application Support/org.covscript.env/\${csABIVersion}/imports"
 
 if [[ "\$HOME"x != ""x ]];then
-    if [[ ! -d "\${csImportPath}" ]]; then
-        mkdir -p -m 755 "\${csImportPath}"
+    if [[ ! -d "\${csUserImportPath}" ]]; then
+        mkdir -p -m 755 "\${csUserImportPath}"
     fi
 else
 	echo "Warning: HOME env is not set"
 fi
 
-csImportPath="\${covscriptDir}/imports:\${csImportPath}"
-
+csImportPath="\${covscriptDir}/imports:\${csUserImportPath}"
 exec "\${csReplBin}" --import-path "\${csImportPath}"
 
 EOF
@@ -193,5 +192,6 @@ echo ":: Copying binaries and libraries"
 cp -r "$buildDir" "$contentDir/MacOS/covscript"
 
 echo ":: Done"
+rm -rf "CovScript.app"
 mv "$workDir" "CovScript.app"
 
