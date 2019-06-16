@@ -1,7 +1,7 @@
 CovScript Packaging Tools
 =========================
 
-This repo contains useful tools for creating CovScript app bundle for Windows, Linux and macOS.
+This repo contains useful tools for creating CovScript app bundle for macOS.
 
 
 ## Overview
