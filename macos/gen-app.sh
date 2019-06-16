@@ -8,9 +8,13 @@ if [[ "$#" != 2 ]]; then
     exit 1
 fi
 
-csBin="$(readlink -f $(which cs))"
-if [[ "$?" != 0 ]]; then
-    echo "CovScript executable (cs) not found"
+buildDir="$1"
+iconPng="$2"
+
+csBin="$buildDir/bin/cs"
+if [[ ! -x "$csBin" ]]; then
+    echo "CovScript executable (cs) not found or cannot be executed"
+	echo "note: does cs executable has execute permission?"
     exit 1
 fi
 
@@ -28,8 +32,6 @@ echo " > Full Version: $csFullVersion"
 echo " > Version     : $csDisplayVersion"
 echo " > ABI         : $csABIVersion"
 
-buildDir="$1"
-iconPng="$2"
 workDir=".$$.CovScript.app.build"
 contentDir="$workDir/Contents"
 
