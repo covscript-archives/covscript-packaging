@@ -130,13 +130,17 @@ cat > "$contentDir/MacOS/wrapper" << EOF
 #!/usr/bin/osascript
 
 set selfPath to POSIX path of ((path to me as text) & "::")
-set command to ("clear; exec " & selfPath & "/launcher " & selfPath)
+set command to ("exec " & selfPath & "bootstrap " & selfPath)
 
+do shell script command
 
-tell application "Terminal"
-	activate
-	set currentTab to do script with command command
-end tell
+EOF
+
+cat > "$contentDir/MacOS/bootstrap" << EOF
+#!/bin/bash
+
+selfDir="\$@"
+open -a Terminal.app "\${selfDir}/launcher"
 
 EOF
 
@@ -154,7 +158,8 @@ EOF
 cat > "$contentDir/MacOS/launcher" << EOF
 #!/bin/bash
 
-selfDir="\$@"
+clear
+selfDir="\$(cd \$(dirname \$0); pwd)"
 covscriptDir="\${selfDir}/covscript"
 
 source "\${selfDir}/config"
@@ -173,11 +178,14 @@ else
 	echo "Warning: HOME env is not set"
 fi
 
+csImportPath="\${covscriptDir}/imports:\${csImportPath}"
+
 exec "\${csReplBin}" --import-path "\${csImportPath}"
 
 EOF
 
 chmod 755 "$contentDir/MacOS/wrapper"
+chmod 755 "$contentDir/MacOS/bootstrap"
 chmod 755 "$contentDir/MacOS/config"
 chmod 755 "$contentDir/MacOS/launcher"
 
